@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'django_crontab',
 
 ]
 
@@ -104,3 +105,9 @@ def get_secret(setting, secrets=secrets):
     except KeyError:
         error_msg = 'Set the {0} environment variable'.format(setting)
     raise ImproperlyConfigured(error_msg)
+
+
+CRONJOBS = [
+    ('0 12 * * *', 'myapp.cron.remove_old_task')
+]
+

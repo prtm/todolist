@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 mysqlclient = "*"
 django = "*"
+django-crontab = "*"
 
 [dev-packages]
 pylint = "*"
