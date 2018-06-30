@@ -95,7 +95,7 @@ STATIC_URL = '/static/'
 
 # decouple is also used
 with open('secrets.json') as f:
-secrets = json.loads(f.read())
+    secrets = json.loads(f.read())
 def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
