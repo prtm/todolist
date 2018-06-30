@@ -1,0 +1,49 @@
+{% extends 'api/base.html' %} {% block head %} {% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/task.css' %}" type="text/css"> {% endblock head %} {% block body %}
+<div class="container-fluid">
+    <div class="row containerImg shadow-sm">
+        <div class="col-md-9">
+            <form>
+                <div class="input-group" style="width: 80%;">
+                    <input class="form-control py-2 border-right-0 dark border-grey" type="search" placeholder="search..." id="example-search-input">
+                    <span class="input-group-append">
+                        <button class="btn btn-outline-secondary border-left-0 border-grey" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-3 h34">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 p20">
+
+            <div class="card">
+                <div class="card-header">
+                    All
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Trash</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9 p20">
+            <div class="card">
+                <div class="card-header">
+                    Tasks
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Demo 1</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+{% endblock body %}
