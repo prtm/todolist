@@ -1,7 +1,9 @@
-# django core
-from django.db import models
+# stdlib
 from datetime import timedelta, date
 
+# django core
+from django.db import models
+from django.core.exceptions import ValidationError
 # --------- Models -------------
 
 # This model will provide created, modified fields
@@ -64,7 +66,7 @@ class TaskQuerySet(models.QuerySet):
 
 class AbstractTask(TimeStampedModel):
     title = models.CharField(
-        max_length=50, unique=True, null=False, blank=False)
+        max_length=50, null=False, blank=False)
 
     due_date = models.DateField(blank=True, null=True)
 
@@ -73,6 +75,7 @@ class AbstractTask(TimeStampedModel):
 
     is_deleted = models.BooleanField(default=False)  # soft deleted
 
+    objects = models.Manager()
     manager = TaskQuerySet.as_manager()
 
     def task_status(self):
@@ -90,10 +93,24 @@ class AbstractTask(TimeStampedModel):
 
 
 class Task(AbstractTask):
+    title = models.CharField(
+        max_length=50, unique=True, null=False, blank=False)
+
     def sub_tasks(self):
         return SubTask.objects.all(parent_task=self.pk)
 
 
 class SubTask(AbstractTask):
     parent_task = models.ForeignKey(
-        Task, related_name='parent_task', on_delete=models.CASCADE)
+        Task, related_name='task', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        print(Task.objects.get(pk=self.parent_task.pk))
+        if self.due_date <= Task.objects.get(pk=self.parent_task.pk).due_date:
+            super(SubTask, self).save(*args, **kwargs)
+        else:
+            raise ValidationError(
+                'Date must be earlier than or equal to parent task due date')
+
+    class Meta:
+        unique_together = ('title', 'parent_task',)
