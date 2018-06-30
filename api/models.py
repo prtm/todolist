@@ -71,7 +71,7 @@ class AbstractTask(TimeStampedModel):
     is_task_completed = models.BooleanField(
         default=False)  # completed or pending
 
-    is_trashed = models.BooleanField(default=False)  # soft deleted
+    is_deleted = models.BooleanField(default=False)  # soft deleted
 
     manager = TaskQuerySet.as_manager()
 
