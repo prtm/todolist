@@ -40,8 +40,11 @@
                                 </a>
                                 {% endif %}
                             </div>
-                            <div class="col-sm-5">
-                                    {{ task.due_date }}
+                            <div class="col-sm-4">
+                                {{ task.due_date }}
+                            </div>
+                            <div class="col-sm-1 deleteGroup" data-id="{{ task.pk }}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
                             </div>
                         </div>
                     </li>

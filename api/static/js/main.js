@@ -3,14 +3,49 @@ $(function () {
     $('.checkBoxGroup').on('click', function (e) {
         var checkBox = e.target
         var divText = $(checkBox).closest('div.row').find('div.col-sm-6')
-        var divDate = $(checkBox).closest('div.row').find('div.col-sm-5')
+        var divDate = $(checkBox).closest('div.row').find('div.col-sm-4')
         if ($(checkBox).is(':checked')) {
             divText.css('text-decoration', 'line-through')
             divDate.css('text-decoration', 'line-through')
         } else {
-            divText.css('text-decoration','none')
-            divDate.css('text-decoration','none')
+            divText.css('text-decoration', 'none')
+            divDate.css('text-decoration', 'none')
         }
+    });
+
+
+    $('.deleteGroup').on('click', function (e) {
+        var deleteIcon = e.target
+        var id = $(deleteIcon).closest('div').data('id')
+        console.log(id);
+        var li = $(deleteIcon).closest('li')
+
+
+        // use this when server side delete
+        $.ajax({
+            type: 'PATCH',
+            contentType: "application/json",
+            url: '/api/v1/task/' + id + "/",
+            data: JSON.stringify({
+                "is_deleted": true
+            }),
+            dataType: 'json',
+            complete: function (data) {
+                console.log(data);
+                $(li).remove()
+            }
+        });
+
+
+        // $.ajax({
+        //     type: 'DELETE',
+        //     url: '/api/v1/task/' + id + "/",
+        //     complete: function (data) {
+        //         console.log(data);
+        //         $(li).remove()
+        //     }
+        // });
+
     });
 
 
