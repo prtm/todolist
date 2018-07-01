@@ -6,7 +6,8 @@ from .models import Task
 
 def task(request):
 
-    task_list = Task.objects.all()
+    task_list = Task.manager.not_trashed()
+    print(task_list)
     paginator = Paginator(task_list, 10)  # Show 10 tasks per page
     page = request.GET.get('page')
     try:
