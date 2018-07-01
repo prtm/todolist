@@ -68,7 +68,7 @@ $(function () {
     $('#trash').on('click', function (e) {
         // /api/v1/task/?is_deleted=true
         console.log('clicked');
-        
+
 
         $.ajax({
             url: "/api/v1/task/",
@@ -81,10 +81,35 @@ $(function () {
                 // console.log(response);
                 data = response['objects']
                 content = $('#content').empty()
-                for(var i=0; i< data.length;i++){
-                    
+                for (var i = 0; i < data.length; i++) {
+                    $(content).append('<li class="list-group-item"> <div class = "row">\
+                                            <div class = "col-sm-1" >\
+                                            <i class="fas fa-undo"></i> </div>' +
+
+                        (data[i]['is_task_completed'] ? '<div class="col-sm-6 pT4" style="text-decoration: line-through;">'
+
+                            :
+                            '<div class="col-sm-6 pT4">')
+
+                        +
+                        (data[i]['has_sub_tasks'] ? '<a href="#">' :
+                            '') +
+                        data[i]['title'] +
+                        (data[i]['has_sub_tasks'] ? '</a>' : '') +
+                        '</div>' +
+                        (data[i]['is_task_completed'] ? '<div class="col-sm-4" style="text-decoration: line-through">' :
+                            '<div class="col-sm-4">')
+
+                        +
+                        data[i]['due_date'] +
+                        '</div> <div class="col-sm-1 deleteGroup"\
+                                                    data-id = "' +
+                        data[i]['id'] +
+                        '" ><i class = "fa fa-trash" aria-hidden = "true" > </i> </div> </div> </li>')
+
+
                 }
-                
+
 
             },
             error: function (xhr) {
