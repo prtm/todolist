@@ -1,3 +1,22 @@
+function pacmanShow() {
+    $('#pacman-container').prop('hidden', false);
+    var loader = $('#loader');
+    var img = loader.find('img');
+    var top = $(window).height() / 2 - 100;
+    var left = $(window).width() / 2 - 100;
+
+
+    loader.css('top', top);
+    loader.css('left', left);
+
+    console.log('show pacman');
+}
+
+function pacmanHide() {
+    console.log('hide pacman');
+    $('#pacman-container').prop('hidden', true);
+}
+
 function checkboxClickListener() {
     $('.checkBoxGroup').on('click', function (e) {
         var checkBox = e.target
@@ -66,8 +85,8 @@ function restoreButtonClickListener() {
     $('.restoreGroup').on('click', function (e) {
         var deleteIcon = e.target
         var li = $(deleteIcon).closest('li')
-        
-        
+
+
         var divDelete = $(deleteIcon).closest('div.row').find('div.permanentDeleteGroup')
         var id = $(divDelete).data('id')
         console.log(id);
@@ -123,7 +142,7 @@ function permanentDeleteButtonClickListener() {
 function homeClickListener() {
 
     $('#home').one('click', function (e) {
-
+        pacmanShow()
         $.ajax({
             url: "/api/v1/task/",
             type: "get", //send it through get method
@@ -131,6 +150,7 @@ function homeClickListener() {
                 'is_deleted': false
             },
             success: function (response) {
+                pacmanHide()
                 trashClickListener()
                 $('#heading').text('Tasks')
                 data = response['objects']
@@ -173,6 +193,7 @@ function homeClickListener() {
             },
             error: function (xhr) {
                 //Do Something to handle error
+                pacmanHide()
                 console.log(xhr);
                 homeClickListener()
             }
@@ -188,6 +209,7 @@ function homeClickListener() {
 function trashClickListener() {
 
     $('#trash').one('click', function (e) {
+        pacmanShow()
         $.ajax({
             url: "/api/v1/task/",
             type: "get", //send it through get method
@@ -195,6 +217,7 @@ function trashClickListener() {
                 'is_deleted': true
             },
             success: function (response) {
+                pacmanHide()
                 homeClickListener()
                 var heading = $('#heading')
                 heading.text('Deleted')
@@ -237,6 +260,7 @@ function trashClickListener() {
             },
             error: function (xhr) {
                 //Do Something to handle error
+                pacmanHide()
                 console.log(xhr);
                 trashClickListener()
 
