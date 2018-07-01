@@ -96,8 +96,12 @@ class Task(AbstractTask):
     title = models.CharField(
         max_length=50, unique=True, null=False, blank=False)
 
+    @property
+    def has_sub_tasks(self):
+        return self.sub_tasks().count() > 0
+
     def sub_tasks(self):
-        return SubTask.objects.all(parent_task=self.pk)
+        return SubTask.objects.filter(parent_task=self.pk)
 
 
 class SubTask(AbstractTask):
