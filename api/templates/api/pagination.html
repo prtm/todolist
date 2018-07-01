@@ -1,0 +1,13 @@
+<div class="pagination" style="width: 70%;margin: auto;">
+    <span class="step-links" style="display: inline-block;">
+        {% if page.has_previous %}
+        <a href="?page={{page.previous_page_number}}">Previous</a>
+        {% endif %}
+        <span class="current" style="margin-right: 10px;margin-left: 10px;">
+            Page {{page.number }}  of  {{ page.paginator.num_pages }}
+        </span>
+        {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">Next</a>
+        {% endif %}
+    </span>
+</div>

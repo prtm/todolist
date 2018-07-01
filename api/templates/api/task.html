@@ -56,12 +56,8 @@
                                     {% else %}
 
                                     <div class="col-sm-4">
-                                        {% endif %} 
-                                        
-                                        {% if task.due_date %}
-                                        {{ task.due_date }}
-                                        {% endif %}
-                                            
+                                        {% endif %} {% if task.due_date %} {{ task.due_date }} {% endif %}
+
                                     </div>
                                     <div class="col-sm-1 deleteGroup" data-id="{{ task.pk }}">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
@@ -78,4 +74,8 @@
             </div>
         </div>
 
+        <div class="col-md-4 offset-4" id="pagination">
+            {% include "api/pagination.html" with page=Tasks %}
+        </div>
+        
         {% endblock body %}

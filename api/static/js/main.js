@@ -9,11 +9,9 @@ function pacmanShow() {
     loader.css('top', top);
     loader.css('left', left);
 
-    console.log('show pacman');
 }
 
 function pacmanHide() {
-    console.log('hide pacman');
     $('#pacman-container').prop('hidden', true);
 }
 
@@ -139,14 +137,35 @@ function permanentDeleteButtonClickListener() {
 }
 
 
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+
 function homeClickListener() {
 
     $('#home').one('click', function (e) {
         pacmanShow()
+        $('#pagination').prop('hidden', false)
+        var page = getUrlParameter('page')
+
         $.ajax({
             url: "/api/v1/task/",
             type: "get", //send it through get method
             data: {
+                'limit': 10,
+                'offset': 10 * (page - 1),
                 'is_deleted': false
             },
             success: function (response) {
@@ -178,7 +197,7 @@ function homeClickListener() {
                             '<div class="col-sm-4">')
 
                         +
-                        (data[i]['due_date']? data[i]['due_date']:'') +
+                        (data[i]['due_date'] ? data[i]['due_date'] : '') +
                         '</div> <div class="col-sm-1 deleteGroup"\
                                                     data-id = "' +
                         data[i]['id'] +
@@ -210,10 +229,14 @@ function trashClickListener() {
 
     $('#trash').one('click', function (e) {
         pacmanShow()
+        // var page = getUrlParameter('page')
+        $('#pagination').prop('hidden', true)
         $.ajax({
             url: "/api/v1/task/",
             type: "get", //send it through get method
             data: {
+                'limit': 10,
+                'offset': 0,
                 'is_deleted': true
             },
             success: function (response) {
