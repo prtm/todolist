@@ -15,7 +15,11 @@ class TaskResource(ModelResource):
         filtering = {
             'is_deleted' : ALL
         }
+        excludes = ('created','modified')
 
+    def dehydrate(self, bundle):
+        bundle.data['has_sub_tasks'] = bundle.obj.has_sub_tasks
+        return bundle
 
 class SubTaskResource(ModelResource):
     class Meta:
