@@ -12,6 +12,9 @@ class TaskResource(ModelResource):
         queryset = Task.objects.all()
         resource_name = 'task'
         authorization = DjangoAuthorization()
+        filtering = {
+            'is_deleted' : ALL
+        }
 
 
 class SubTaskResource(ModelResource):

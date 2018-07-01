@@ -14,7 +14,7 @@ $(function () {
 
         var divDelete = $(checkBox).closest('div.row').find('div.deleteGroup')
         var id = $(divDelete).data('id')
-        
+
         $.ajax({
             type: 'PATCH',
             contentType: "application/json",
@@ -62,6 +62,37 @@ $(function () {
         //     }
         // });
 
+    });
+
+
+    $('#trash').on('click', function (e) {
+        // /api/v1/task/?is_deleted=true
+        console.log('clicked');
+        
+
+        $.ajax({
+            url: "/api/v1/task/",
+            type: "get", //send it through get method
+            data: {
+                'is_deleted': true
+            },
+            success: function (response) {
+                //Do Something
+                // console.log(response);
+                data = response['objects']
+                content = $('#content').empty()
+                for(var i=0; i< data.length;i++){
+                    
+                }
+                
+
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+                console.log(xhr);
+
+            }
+        });
     });
 
 
