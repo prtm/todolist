@@ -31,14 +31,17 @@
                                     <label for="checkbox{{forloop.counter0}}"></label>
                                 </div>
                             </div>
-                            <div class="col-sm-10 pT4">
+                            <div class="col-sm-6 pT4">
 
                                 {% if task.has_sub_tasks %}
                                 <a href="">
 
-                                    {% endif %} {{ task.title }} {% if task.has_sub_tasks %}
+                                    {% endif %} {{ task.title }}{% if task.has_sub_tasks %}
                                 </a>
                                 {% endif %}
+                            </div>
+                            <div class="col-sm-5">
+                                    {{ task.due_date }}
                             </div>
                         </div>
                     </li>
