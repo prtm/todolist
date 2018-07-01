@@ -56,7 +56,12 @@
                                     {% else %}
 
                                     <div class="col-sm-4">
-                                        {% endif %} {{ task.due_date }}
+                                        {% endif %} 
+                                        
+                                        {% if task.due_date %}
+                                        {{ task.due_date }}
+                                        {% endif %}
+                                            
                                     </div>
                                     <div class="col-sm-1 deleteGroup" data-id="{{ task.pk }}">
                                         <i class="fa fa-trash" aria-hidden="true"></i>

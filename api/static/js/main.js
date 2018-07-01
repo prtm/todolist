@@ -178,7 +178,7 @@ function homeClickListener() {
                             '<div class="col-sm-4">')
 
                         +
-                        data[i]['due_date'] +
+                        (data[i]['due_date']? data[i]['due_date']:'') +
                         '</div> <div class="col-sm-1 deleteGroup"\
                                                     data-id = "' +
                         data[i]['id'] +
