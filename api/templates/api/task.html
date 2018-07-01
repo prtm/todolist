@@ -27,35 +27,50 @@
                         <div class="row">
                             <div class="col-sm-1">
                                 <div class="round">
-                                    <input type="checkbox" id="checkbox{{forloop.counter0}}" class="checkBoxGroup" />
+
+                                    {% if task.is_task_completed %}
+                                    <input type="checkbox" id="checkbox{{forloop.counter0}}" checked class="checkBoxGroup" /> {% else %}
+                                    <input type="checkbox" id="checkbox{{forloop.counter0}}" class="checkBoxGroup" /> {% endif %}
+
                                     <label for="checkbox{{forloop.counter0}}"></label>
                                 </div>
                             </div>
-                            <div class="col-sm-6 pT4">
 
-                                {% if task.has_sub_tasks %}
-                                <a href="">
+                            {% if task.is_task_completed %}
 
-                                    {% endif %} {{ task.title }}{% if task.has_sub_tasks %}
-                                </a>
-                                {% endif %}
-                            </div>
-                            <div class="col-sm-4">
-                                {{ task.due_date }}
-                            </div>
-                            <div class="col-sm-1 deleteGroup" data-id="{{ task.pk }}">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </div>
-                        </div>
+                            <div class="col-sm-6 pT4" style="text-decoration: line-through;">
+                                {% else %}
+                                <div class="col-sm-6 pT4">
+                                    {% endif %} {% if task.has_sub_tasks %}
+                                    <a href="">
+
+                                        {% endif %} {{ task.title }} {% if task.has_sub_tasks %}
+                                    </a>
+                                    {% endif %}
+                                </div>
+
+
+                                {% if task.is_task_completed %}
+
+                                <div class="col-sm-4" style="text-decoration: line-through">
+                                    {% else %}
+
+                                    <div class="col-sm-4">
+                                        {% endif %} {{ task.due_date }}
+                                    </div>
+                                    <div class="col-sm-1 deleteGroup" data-id="{{ task.pk }}">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                </div>
                     </li>
                     {% endfor %}
 
                 </ul>
 
 
+                </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-{% endblock body %}
+        {% endblock body %}
