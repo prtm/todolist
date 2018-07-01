@@ -11,6 +11,22 @@ $(function () {
             divText.css('text-decoration', 'none')
             divDate.css('text-decoration', 'none')
         }
+
+        var divDelete = $(checkBox).closest('div.row').find('div.deleteGroup')
+        var id = $(divDelete).data('id')
+        
+        $.ajax({
+            type: 'PATCH',
+            contentType: "application/json",
+            url: '/api/v1/task/' + id + "/",
+            data: JSON.stringify({
+                "is_task_completed": $(checkBox).is(':checked')
+            }),
+            dataType: 'json',
+            complete: function (data) {
+                console.log(data);
+            }
+        });
     });
 
 
