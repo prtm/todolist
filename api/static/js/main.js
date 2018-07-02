@@ -153,6 +153,42 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 
+function fillTasks(data) {
+    content = $('#content').empty()
+    for (var i = 0; i < data.length; i++) {
+        $(content).append('<li class="list-group-item"> <div class = "row">\
+                    <div class="col-sm-1"> <div class="round">' +
+            (data[i]['is_task_completed'] ? '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
+                '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
+            '<label for="checkbox' + i + '"></label> \
+                    </div> </div>' +
+
+            (data[i]['is_task_completed'] ? '<div class="col-sm-6 pT4" style="text-decoration: line-through;">'
+
+                :
+                '<div class="col-sm-6 pT4">')
+
+            +
+            (data[i]['has_sub_tasks'] ? '<a href="' + "/sub-tasks/" + data[i]['id'] + '">' :
+                '') +
+            data[i]['title'] +
+            (data[i]['has_sub_tasks'] ? '</a>' : '') +
+            '</div>' +
+            (data[i]['is_task_completed'] ? '<div class="col-sm-4" style="text-decoration: line-through">' :
+                '<div class="col-sm-4">')
+
+            +
+            (data[i]['due_date'] ? data[i]['due_date'] : '') +
+            '</div> <div class="col-sm-1 deleteGroup"\
+                                                    data-id = "' +
+            data[i]['id'] +
+            '" ><i class = "fa fa-trash" aria-hidden = "true" > </i> </div> </div> </li>')
+
+
+    }
+}
+
+
 function homeClickListener() {
 
     $('#home').one('click', function (e) {
@@ -176,38 +212,11 @@ function homeClickListener() {
                 trashClickListener()
                 $('#heading').text('Tasks')
                 data = response['objects']
-                content = $('#content').empty()
-                for (var i = 0; i < data.length; i++) {
-                    $(content).append('<li class="list-group-item"> <div class = "row">\
-                    <div class="col-sm-1"> <div class="round">' +
-                        (data[i]['is_task_completed'] ? '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
-                            '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
-                        '<label for="checkbox' + i + '"></label> \
-                    </div> </div>' +
 
-                        (data[i]['is_task_completed'] ? '<div class="col-sm-6 pT4" style="text-decoration: line-through;">'
-
-                            :
-                            '<div class="col-sm-6 pT4">')
-
-                        +
-                        (data[i]['has_sub_tasks'] ? '<a href="'+"/sub-tasks/"+data[i]['id']+'">' :
-                            '') +
-                        data[i]['title'] +
-                        (data[i]['has_sub_tasks'] ? '</a>' : '') +
-                        '</div>' +
-                        (data[i]['is_task_completed'] ? '<div class="col-sm-4" style="text-decoration: line-through">' :
-                            '<div class="col-sm-4">')
-
-                        +
-                        (data[i]['due_date'] ? data[i]['due_date'] : '') +
-                        '</div> <div class="col-sm-1 deleteGroup"\
-                                                    data-id = "' +
-                        data[i]['id'] +
-                        '" ><i class = "fa fa-trash" aria-hidden = "true" > </i> </div> </div> </li>')
+                // fill data
+                fillTasks(data)
 
 
-                }
                 checkboxClickListener()
                 deleteButtonListener()
 
@@ -261,7 +270,7 @@ function trashClickListener() {
                             '<div class="col-sm-6 pT4">')
 
                         +
-                        (data[i]['has_sub_tasks'] ? '<a href="'+"/sub-tasks/"+data[i]['id']+'">' :
+                        (data[i]['has_sub_tasks'] ? '<a href="' + "/sub-tasks/" + data[i]['id'] + '">' :
                             '') +
                         data[i]['title'] +
                         (data[i]['has_sub_tasks'] ? '</a>' : '') +
@@ -301,4 +310,55 @@ $(function () {
     checkboxClickListener()
     deleteButtonListener()
     trashClickListener()
+
+
+    $('#search-form').on('submit', function (e) {
+        e.preventDefault();
+
+        var q = $('#search-input').val();
+        var is_deleted;
+        if($('#heading').text() == "Tasks"){
+            is_deleted = false;
+        }else{
+            is_deleted = true;
+        }
+        pacmanShow()
+        $.ajax({
+            url: "/api/v1/task/search/",
+            type: "get", //send it through get method
+            data: {
+                'q' : q,
+                'limit': 20,
+                'offset': 0,
+                'is_deleted': is_deleted
+            },
+            success: function (response) {
+                window.history.pushState("", "", '/tasks/');
+                pacmanHide()
+                trashClickListener()
+                $('#heading').text('Search Results [ Max 20 Results ]')
+                $('#pagination').hide()
+                data = response['objects']
+                console.log(data);
+                
+
+                // fill data
+                fillTasks(data)
+
+
+                checkboxClickListener()
+                deleteButtonListener()
+
+
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+                pacmanHide()
+                console.log(xhr);
+                homeClickListener()
+            }
+        });
+
+
+    });
 });

@@ -3,7 +3,7 @@ from django.conf.urls import url, include
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from haystack.query import SearchQuerySet
-
+from haystack.inputs import Clean, AutoQuery
 
 # project
 from .models import Task, SubTask
@@ -45,6 +45,11 @@ class TaskResource(ModelResource):
 
         # Do the query.
         sqs = SearchQuerySet().models(Task).load_all().auto_query(request.GET.get('q', ''))
+
+        # if request.GET['is_deleted']:
+        #     sqs = sqs.filter(is_deleted=Clean(request.GET['is_deleted']))
+        #     print("is_deleted present")
+
         paginator = self._meta.paginator_class(request.GET, sqs,
                                                resource_uri=self.get_resource_uri(), limit=self._meta.limit,
                                                max_limit=self._meta.max_limit, collection_name=self._meta.collection_name)
@@ -75,7 +80,7 @@ class SubTaskResource(ModelResource):
             'parent_task': ALL_WITH_RELATIONS
         }
         excludes = ('created', 'modified')
-    
+
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name,
@@ -89,6 +94,12 @@ class SubTaskResource(ModelResource):
 
         # Do the query.
         sqs = SearchQuerySet().models(Task).load_all().auto_query(request.GET.get('q', ''))
+        # sqs = SearchQuerySet().models(Task).filter(title=).auto_query(request.GET.get('q', ''))
+
+        # if request.GET['is_deleted']:
+        #     sqs = sqs.filter(is_deleted=Clean(request.GET['is_deleted']))
+        #     print("is_deleted present")
+
         paginator = self._meta.paginator_class(request.GET, sqs,
                                                resource_uri=self.get_resource_uri(), limit=self._meta.limit,
                                                max_limit=self._meta.max_limit, collection_name=self._meta.collection_name)
