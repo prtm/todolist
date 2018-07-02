@@ -40,4 +40,4 @@ def sub_task(request, id):
         # If page is out of range deliver last page of results
         sub_tasks = paginator.page(paginator.num_pages)
 
-    return render(request, 'api/sub_task.html', {'page': page, 'SubTasks': sub_tasks, 'task': SubTask.objects.get(parent_task=id)})
+    return render(request, 'api/sub_task.html', {'page': page, 'SubTasks': sub_tasks, 'task': Task.objects.get(pk=id)})
