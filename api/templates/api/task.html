@@ -42,7 +42,7 @@
                                 {% else %}
                                 <div class="col-sm-6 pT4">
                                     {% endif %} {% if task.has_sub_tasks %}
-                                    <a href="">
+                                    <a href="{% url 'api:sub-tasks' %}">
 
                                         {% endif %} {{ task.title }} {% if task.has_sub_tasks %}
                                     </a>
