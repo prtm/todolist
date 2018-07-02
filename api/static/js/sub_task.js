@@ -157,6 +157,128 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 
+function fillSubTasks(data) {
+
+    content = $('#content').empty()
+    var html = '';
+    for (var i = 0; i < data.length; i++) {
+        html += (i % 3 == 0 ? '<div class="row shadow-sm">' : '') +
+            '<div class="col-sm-4">\
+            <div class="card">\
+                <div class="card-body">\
+                    <div class="row">\
+                        <div class="col-sm-10">' +
+            (data[i]['is_task_completed'] ?
+                '<h5 class="card-title" style="text-decoration: line-through;">' + data[i]['title'] + '</h5>' :
+                '<h5 class="card-title">' + data[i]['title'] + '</h5>') +
+            '</div>\
+                        <div class="col-sm-2 deleteGroup" data-id="' + data[i]['id'] + '">\
+                            <i class="fa fa-trash" aria-hidden="true"></i>\
+                        </div>\
+                    </div>' +
+            (data[i]['is_task_completed'] ?
+                '<p class="card-text" style="text-decoration: line-through;">' + data[i]['due_date'] + '</p>' :
+                '<p class="card-text">' + data[i]['due_date'] + '</p>') +
+            '<div class="row">\
+                        <div class="col-sm-12">\
+                            <div class="round">' +
+            (data[i]['is_task_completed'] ?
+                '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
+                '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
+            '<label for="checkbox' + i + '"></label>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>' +
+            ((i + 1) % 3 == 0 ? '</div>' : i == (data.length - 1) ? '</div>' : '');
+    }
+
+    $(content).append(html)
+
+}
+
+
+
+function dateFilter(code) {
+    console.log(code);
+
+    var today = new Date();
+    var dd = ("0" + today.getDate()).slice(-2)
+    var mm = ("0" + (today.getMonth() + 1)).slice(-2)
+    var yyyy = today.getFullYear();
+
+    var dict = {}; // create an empty array
+    $('#date-filter').text(code)
+
+
+
+    if (code == "today") {
+        var value1 = yyyy + "-" + mm + "-" + dd
+        dict['due_date'] = value1
+    } else if (code == "this-week") {
+        var first = today.getDate() - today.getDay(); // First day is the day of the month - the day of the week
+        var last = first + 6;
+        var curr = new Date();
+        var first = new Date(curr.setDate(first));
+        var last = new Date(curr.setDate(last))
+        console.log(first, last);
+
+        var value1 = first.getFullYear() + "-" + ("0" + (first.getMonth() + 1)).slice(-2) + "-" + ('0' + first.getDate()).slice(-2);
+        value1 = value1 + "," + last.getFullYear() + "-" + ("0" + (last.getMonth() + 1)).slice(-2) + "-" + ('0' + last.getDate()).slice(-2);
+
+        dict['due_date__range'] = value1
+
+    } else if (code == "next-week") {
+        var first = today.getDate() - today.getDay() + 7; // First day is the day of the month - the day of the week
+        var last = first + 6;
+        var curr = new Date();
+        var first = new Date(curr.setDate(first));
+        var last = new Date(curr.setDate(last))
+        var value1 = first.getFullYear() + "-" + ("0" + (first.getMonth() + 1)).slice(-2) + "-" + ('0' + first.getDate()).slice(-2);
+        value1 = value1 + "," + last.getFullYear() + "-" + ("0" + (last.getMonth() + 1)).slice(-2) + "-" + ('0' + last.getDate()).slice(-2);
+
+        dict['due_date__range'] = value1
+    } else {
+        var value1 = yyyy + "-" + mm + "-" + dd;
+        dict['due_date__gte'] = value1
+    }
+
+    console.log(dict);
+
+
+
+    $.ajax({
+        url: "/api/v1/sub-task/",
+        type: "get", //send it through get method
+        data: dict,
+        success: function (response) {
+            $('#pagination').prop('hidden', true)
+            pacmanHide()
+            trashClickListener()
+            $('#heading').text('Tasks')
+            data = response['objects']
+
+            // fill data
+            fillSubTasks(data)
+
+
+            checkboxClickListener()
+            deleteButtonListener()
+
+
+        },
+        error: function (xhr) {
+            //Do Something to handle error
+            pacmanHide()
+            console.log(xhr);
+            homeClickListener()
+        }
+    });
+}
+
+
 function homeClickListener() {
 
     $('#home').one('click', function (e) {
@@ -186,44 +308,8 @@ function homeClickListener() {
                 trashClickListener()
                 $('#heading').text('Sub Tasks')
                 data = response['objects']
-                content = $('#content').empty()
-                var html = '';
-                for (var i = 0; i < data.length; i++) {
-                    html += (i % 3 == 0 ? '<div class="row shadow-sm">' : '') +
-                        '<div class="col-sm-4">\
-                        <div class="card">\
-                            <div class="card-body">\
-                                <div class="row">\
-                                    <div class="col-sm-10">' +
-                        (data[i]['is_task_completed'] ?
-                            '<h5 class="card-title" style="text-decoration: line-through;">' + data[i]['title'] + '</h5>' :
-                            '<h5 class="card-title">' + data[i]['title'] + '</h5>') +
-                        '</div>\
-                                    <div class="col-sm-2 deleteGroup" data-id="' + data[i]['id'] + '">\
-                                        <i class="fa fa-trash" aria-hidden="true"></i>\
-                                    </div>\
-                                </div>' +
-                        (data[i]['is_task_completed'] ?
-                            '<p class="card-text" style="text-decoration: line-through;">' + data[i]['due_date'] + '</p>' :
-                            '<p class="card-text">' + data[i]['due_date'] + '</p>') +
-                        '<div class="row">\
-                                    <div class="col-sm-12">\
-                                        <div class="round">' +
-                        (data[i]['is_task_completed'] ?
-                            '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
-                            '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
-                        '<label for="checkbox' + i + '"></label>\
-                                        </div>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>' +
-                        ((i+1) % 3 == 0 ? '</div>' : i == (data.length - 1) ? '</div>' : '');
-                }
-                
-                $(content).append(html)
-                
+                fillSubTasks(data)
+
                 checkboxClickListener()
                 deleteButtonListener()
 
@@ -317,4 +403,66 @@ $(function () {
     checkboxClickListener()
     deleteButtonListener()
     trashClickListener()
+
+    $('#search-form').on('submit', function (e) {
+        e.preventDefault();
+
+        var q = $('#search-input').val();
+        var is_deleted;
+        if ($('#heading').text() == "Sub Tasks") {
+            is_deleted = false;
+        } else {
+            is_deleted = true;
+        }
+        pacmanShow()
+        $.ajax({
+            url: "/api/v1/task/search/",
+            type: "get", //send it through get method
+            data: {
+                'q': q,
+                'limit': 20,
+                'offset': 0,
+                'is_deleted': is_deleted
+            },
+            success: function (response) {
+                window.history.pushState("", "", '/sub-tasks/');
+                pacmanHide()
+                trashClickListener()
+                $('#heading').text('Search Results [ Max 20 Results ]')
+                $('#pagination').hide()
+                data = response['objects']
+                console.log(data);
+
+
+                // fill data
+                fillSubTasks(data)
+
+
+                checkboxClickListener()
+                deleteButtonListener()
+
+
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+                pacmanHide()
+                console.log(xhr);
+                homeClickListener()
+            }
+        });
+    });
+
+
+    $('#today').on('click', function (e) {
+        dateFilter("today")
+    });
+    $('#this-week').on('click', function (e) {
+        dateFilter("this-week")
+    });
+    $('#next-week').on('click', function (e) {
+        dateFilter("next-week")
+    });
+    $('#over-due').on('click', function (e) {
+        dateFilter("over-due")
+    });
 });
