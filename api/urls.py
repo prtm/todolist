@@ -1,6 +1,6 @@
 # core django
 from django.conf.urls import url, include
-
+from django.http import HttpResponseRedirect
 # project
 from .views import task, sub_task
 from .resources import TaskResource, SubTaskResource
@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^tasks/$', task, name='task'),
     url(r'^sub-tasks/(?P<id>[0-9]+)/$', sub_task, name='sub-task'),
     url(r'^api/', include(v1_api.urls)),
+    url(r'^$', lambda r: HttpResponseRedirect('tasks/')),
 
 ]
