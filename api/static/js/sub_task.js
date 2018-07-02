@@ -57,8 +57,8 @@ function deleteButtonListener() {
         var deleteIcon = e.target
         var div = $(deleteIcon).closest('div')
         var id = $(div).data('id')
-        console.log('sub_task: '+id);
-        
+        console.log('sub_task: ' + id);
+
         var container = $(deleteIcon).closest('div.shadow-sm')
 
 
@@ -167,9 +167,9 @@ function homeClickListener() {
             page = 1
         }
 
-        var path = window.location.pathname.split( '/' )
+        var path = window.location.pathname.split('/')
         var task_id = path[2]
-        
+
 
 
         $.ajax({
@@ -179,7 +179,7 @@ function homeClickListener() {
                 'parent_task': task_id,
                 'limit': 10,
                 'offset': 10 * (page - 1),
-                'is_deleted': false 
+                'is_deleted': false
             },
             success: function (response) {
                 pacmanHide()
@@ -187,9 +187,9 @@ function homeClickListener() {
                 $('#heading').text('Sub Tasks')
                 data = response['objects']
                 content = $('#content').empty()
+                var html = '';
                 for (var i = 0; i < data.length; i++) {
-                    $(content).append(
-                        (i % 3 == 0 ? '<div class="row shadow-sm">' : '') +
+                    html += (i % 3 == 0 ? '<div class="row shadow-sm">' : '') +
                         '<div class="col-sm-4">\
                         <div class="card">\
                             <div class="card-body">\
@@ -199,7 +199,7 @@ function homeClickListener() {
                             '<h5 class="card-title" style="text-decoration: line-through;">' + data[i]['title'] + '</h5>' :
                             '<h5 class="card-title">' + data[i]['title'] + '</h5>') +
                         '</div>\
-                                    <div class="col-sm-2 deleteGroup" data-id="'+data[i]['id']+'">\
+                                    <div class="col-sm-2 deleteGroup" data-id="' + data[i]['id'] + '">\
                                         <i class="fa fa-trash" aria-hidden="true"></i>\
                                     </div>\
                                 </div>' +
@@ -212,15 +212,18 @@ function homeClickListener() {
                         (data[i]['is_task_completed'] ?
                             '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
                             '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
-                        '<label for="checkbox'+i+'"></label>\
+                        '<label for="checkbox' + i + '"></label>\
                                         </div>\
                                     </div>\
                                 </div>\
                             </div>\
                         </div>\
                     </div>' +
-                        ((i+1) % 3 == 0 ? '</div>' : ''))
+                        ((i+1) % 3 == 0 ? '</div>' : i == (data.length - 1) ? '</div>' : '');
                 }
+                
+                $(content).append(html)
+                
                 checkboxClickListener()
                 deleteButtonListener()
 
@@ -243,7 +246,7 @@ function trashClickListener() {
         pacmanShow()
         // var page = getUrlParameter('page')
         $('#pagination').prop('hidden', true)
-        var path = window.location.pathname.split( '/' )
+        var path = window.location.pathname.split('/')
         var task_id = path[2]
         console.log(task_id);
         $.ajax({
