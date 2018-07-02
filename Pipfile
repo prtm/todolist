@@ -8,6 +8,7 @@ mysqlclient = "*"
 django = "*"
 django-crontab = "*"
 django-tastypie = "*"
+django-haystack = "*"
 
 [dev-packages]
 pylint = "*"

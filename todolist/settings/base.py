@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'django_crontab',
+    'haystack',
 
 ]
 
@@ -99,6 +100,8 @@ STATIC_URL = '/static/'
 # decouple is also used
 with open('secrets.json') as f:
     secrets = json.loads(f.read())
+
+
 def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
@@ -111,3 +114,10 @@ CRONJOBS = [
     ('0 12 * * *', 'myapp.cron.remove_old_task')
 ]
 
+
+# solr, elasticsearch, whoosh, xapian, other engines used
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}

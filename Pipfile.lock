@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2faa9417d778e89b37827ba35ec86a99b63bea498b422d783a096328695ae6cd"
+            "sha256": "7951c7431174c4a8b4f1c33aa030e2c77e12a32a69937ecc59cdeb82aa85abfa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,11 +18,11 @@
     "default": {
         "django": {
             "hashes": [
-                "sha256:3eb25c99df1523446ec2dc1b00e25eb2ecbdf42c9d8b0b8b32a204a8db9011f8",
-                "sha256:69ff89fa3c3a8337015478a1a0744f52a9fef5d12c1efa01a01f99bcce9bf10c"
+                "sha256:97886b8a13bbc33bfeba2ff133035d3eca014e2309dff2b6da0bdfc0b8656613",
+                "sha256:e900b73beee8977c7b887d90c6c57d68af10066b9dac898e1eaf0f82313de334"
             ],
             "index": "pypi",
-            "version": "==2.0.6"
+            "version": "==2.0.7"
         },
         "django-crontab": {
             "hashes": [
@@ -30,6 +30,13 @@
             ],
             "index": "pypi",
             "version": "==0.7.1"
+        },
+        "django-haystack": {
+            "hashes": [
+                "sha256:8b54bcc926596765d0a3383d693bcdd76109c7abb6b2323b3984a39e3576028c"
+            ],
+            "index": "pypi",
+            "version": "==2.8.1"
         },
         "django-tastypie": {
             "hashes": [
