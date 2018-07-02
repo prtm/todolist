@@ -25,7 +25,7 @@ class OldTasksManager(models.Manager):
 class TaskQuerySet(models.QuerySet):
     def old(self):
         print(date.today()-timedelta(days=30))
-        return self.filter(is_is_deletedtrashed=True, due_date__lte=date.today()-timedelta(days=30))
+        return self.filter(is_is_deleted=True, due_date__lte=date.today()-timedelta(days=30))
 
     def today(self):
         return self.filter(due_date=date.today())

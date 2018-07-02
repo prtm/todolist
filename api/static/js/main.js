@@ -189,6 +189,84 @@ function fillTasks(data) {
 }
 
 
+function dateFilter(code) {
+    console.log(code);
+
+    var today = new Date();
+    var dd = ("0" + today.getDate()).slice(-2)
+    var mm = ("0" + (today.getMonth() + 1)).slice(-2)
+    var yyyy = today.getFullYear();
+
+    var dict = {}; // create an empty array
+    $('#date-filter').text(code)
+
+
+
+    if (code == "today") {
+        var value1 = yyyy + "-" + mm + "-" + dd
+        dict['due_date'] = value1
+    } else if (code == "this-week") {
+        var first = today.getDate() - today.getDay(); // First day is the day of the month - the day of the week
+        var last = first + 6;
+        var curr = new Date();
+        var first = new Date(curr.setDate(first));
+        var last = new Date(curr.setDate(last))
+        console.log(first, last);
+
+        var value1 = first.getFullYear() + "-" + ("0" +(first.getMonth() + 1)).slice(-2) + "-" + ('0'+first.getDate()).slice(-2);
+        value1 = value1 + "," + last.getFullYear() + "-" + ("0" +(last.getMonth() + 1)).slice(-2) + "-" + ('0'+last.getDate()).slice(-2);
+
+        dict['due_date__range'] = value1
+
+    } else if (code == "next-week") {
+        var first = today.getDate() - today.getDay() + 7; // First day is the day of the month - the day of the week
+        var last = first + 6;
+        var curr = new Date();
+        var first = new Date(curr.setDate(first));
+        var last = new Date(curr.setDate(last))
+        var value1 = first.getFullYear() + "-" + ("0" +(first.getMonth() + 1)).slice(-2) + "-" + ('0'+first.getDate()).slice(-2);
+        value1 = value1 + "," + last.getFullYear() + "-" + ("0" +(last.getMonth() + 1)).slice(-2) + "-" + ('0'+last.getDate()).slice(-2);
+
+        dict['due_date__range'] = value1
+    } else {
+        var value1 = yyyy + "-" + mm + "-" + dd;
+        dict['due_date__gte'] = value1
+    }
+
+    console.log(dict);
+
+
+
+    $.ajax({
+        url: "/api/v1/task/",
+        type: "get", //send it through get method
+        data: dict,
+        success: function (response) {
+            $('#pagination').prop('hidden', true)
+            pacmanHide()
+            trashClickListener()
+            $('#heading').text('Tasks')
+            data = response['objects']
+
+            // fill data
+            fillTasks(data)
+
+
+            checkboxClickListener()
+            deleteButtonListener()
+
+
+        },
+        error: function (xhr) {
+            //Do Something to handle error
+            pacmanHide()
+            console.log(xhr);
+            homeClickListener()
+        }
+    });
+}
+
+
 function homeClickListener() {
 
     $('#home').one('click', function (e) {
@@ -317,9 +395,9 @@ $(function () {
 
         var q = $('#search-input').val();
         var is_deleted;
-        if($('#heading').text() == "Tasks"){
+        if ($('#heading').text() == "Tasks") {
             is_deleted = false;
-        }else{
+        } else {
             is_deleted = true;
         }
         pacmanShow()
@@ -327,7 +405,7 @@ $(function () {
             url: "/api/v1/task/search/",
             type: "get", //send it through get method
             data: {
-                'q' : q,
+                'q': q,
                 'limit': 20,
                 'offset': 0,
                 'is_deleted': is_deleted
@@ -340,7 +418,7 @@ $(function () {
                 $('#pagination').hide()
                 data = response['objects']
                 console.log(data);
-                
+
 
                 // fill data
                 fillTasks(data)
@@ -360,5 +438,18 @@ $(function () {
         });
 
 
+    });
+
+    $('#today').on('click', function (e) {
+        dateFilter("today")
+    });
+    $('#this-week').on('click', function (e) {
+        dateFilter("this-week")
+    });
+    $('#next-week').on('click', function (e) {
+        dateFilter("next-week")
+    });
+    $('#over-due').on('click', function (e) {
+        dateFilter("over-due")
     });
 });

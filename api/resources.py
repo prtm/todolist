@@ -24,7 +24,8 @@ class TaskResource(ModelResource):
         resource_name = 'task'
         authorization = DjangoAuthorization()
         filtering = {
-            'is_deleted': ALL
+            'is_deleted': ALL,
+            'due_date': ['exact', 'range', 'gte',]
         }
         excludes = ('created', 'modified')
 
