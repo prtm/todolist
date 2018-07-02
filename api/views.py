@@ -1,3 +1,6 @@
+#stdlib
+from datetime import date
+
 # core django
 from django.shortcuts import render
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -23,7 +26,7 @@ def task(request):
         # If page is out of range deliver last page of results
         tasks = paginator.page(paginator.num_pages)
 
-    return render(request, 'api/task.html', {'page': page, 'Tasks': tasks})
+    return render(request, 'api/task.html', {'page': page, 'Tasks': tasks, 'today_date':date.today()})
 
 # handle sub task request with pagination
 def sub_task(request, id):

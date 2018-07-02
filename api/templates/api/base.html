@@ -32,7 +32,7 @@
             <div class="col-md-9">
                 <form id="search-form">
                     <div class="input-group" style="width: 80%;">
-                        <input class="form-control py-2 border-right-0 dark border-grey" type="search" id="search-input" placeholder="search..." >
+                        <input class="form-control py-2 border-right-0 dark border-grey" type="search" id="search-input" placeholder="search...">
                         <span class="input-group-append">
                             <button class="btn btn-outline-secondary border-left-0 border-grey" type="submit">
                                 <i class="fa fa-search"></i>
@@ -42,8 +42,20 @@
                 </form>
             </div>
 
-            <div class="col-md-3 h34">
-
+            <div class="col-md-3 h34" style="color:white; padding-top: 16px;">
+                <h4 class="text-center">{{ today_date }}</h4>
+                <div class="dropdown d-flex justify-content-center">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="date-filter" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Date Filter
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <button class="dropdown-item" type="button" id="today">Today</button>
+                        <button class="dropdown-item" type="button" id="this-week">This Week</button>
+                        <button class="dropdown-item" type="button" id="next-week">Next Week</button>
+                        <button class="dropdown-item" type="button" id="over-due">OverDue</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
