@@ -159,6 +159,9 @@ function homeClickListener() {
         pacmanShow()
         $('#pagination').prop('hidden', false)
         var page = getUrlParameter('page')
+        if (page == null) {
+            page = 1
+        }
 
         $.ajax({
             url: "/api/v1/task/",
