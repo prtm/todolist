@@ -5,6 +5,7 @@ from .models import Task, SubTask
 from tastypie.resources import ModelResource
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.authorization import DjangoAuthorization
+from tastypie import fields
 
 
 class TaskResource(ModelResource):
@@ -22,6 +23,7 @@ class TaskResource(ModelResource):
         return bundle
 
 class SubTaskResource(ModelResource):
+    parent_task = fields.ForeignKey(TaskResource, attribute='parent_task',full=True)
     class Meta:
         queryset = SubTask.objects.all()
         resource_name = 'sub-task'
