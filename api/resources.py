@@ -26,3 +26,8 @@ class SubTaskResource(ModelResource):
         queryset = SubTask.objects.all()
         resource_name = 'sub-task'
         authorization = DjangoAuthorization()
+        filtering = {
+            'is_deleted' : ALL,
+            'id' : ALL
+        }
+        excludes = ('created','modified')
