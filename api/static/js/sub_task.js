@@ -212,7 +212,7 @@ function homeClickListener() {
                         (data[i]['is_task_completed'] ?
                             '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
                             '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
-                        '<label for="checkbox{{forloop.counter0}}"></label>\
+                        '<label for="checkbox'+i+'"></label>\
                                         </div>\
                                     </div>\
                                 </div>\
