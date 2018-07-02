@@ -57,6 +57,8 @@ function deleteButtonListener() {
         var deleteIcon = e.target
         var div = $(deleteIcon).closest('div')
         var id = $(div).data('id')
+        console.log('sub_task: '+id);
+        
         var container = $(deleteIcon).closest('div.shadow-sm')
 
 
@@ -165,10 +167,16 @@ function homeClickListener() {
             page = 1
         }
 
+        var path = window.location.pathname.split( '/' )
+        var task_id = path[2]
+        
+
+
         $.ajax({
             url: "/api/v1/sub-task/",
             type: "get", //send it through get method
             data: {
+                'parent_task': task_id,
                 'limit': 10,
                 'offset': 10 * (page - 1),
                 'is_deleted': false 
@@ -191,7 +199,7 @@ function homeClickListener() {
                             '<h5 class="card-title" style="text-decoration: line-through;">' + data[i]['title'] + '</h5>' :
                             '<h5 class="card-title">' + data[i]['title'] + '</h5>') +
                         '</div>\
-                                    <div class="col-sm-2 deleteGroup" data-id="{{ sub_task.pk }}">\
+                                    <div class="col-sm-2 deleteGroup" data-id="'+data[i]['id']+'">\
                                         <i class="fa fa-trash" aria-hidden="true"></i>\
                                     </div>\
                                 </div>' +
@@ -235,10 +243,14 @@ function trashClickListener() {
         pacmanShow()
         // var page = getUrlParameter('page')
         $('#pagination').prop('hidden', true)
+        var path = window.location.pathname.split( '/' )
+        var task_id = path[2]
+        console.log(task_id);
         $.ajax({
             url: "/api/v1/sub-task/",
             type: "get", //send it through get method
             data: {
+                'parent_task': task_id,
                 'limit': 10,
                 'offset': 0,
                 'is_deleted': true
