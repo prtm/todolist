@@ -1,9 +1,13 @@
+# core django
 from django.shortcuts import render
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+# project
 from .models import Task, SubTask
 # Create your views here.
 
 
+
+# handle task request with pagination
 def task(request):
 
     task_list = Task.manager.not_trashed()
@@ -21,7 +25,7 @@ def task(request):
 
     return render(request, 'api/task.html', {'page': page, 'Tasks': tasks})
 
-
+# handle sub task request with pagination
 def sub_task(request, id):
 
     sub_task_list = SubTask.manager.not_trashed().filter(parent_task=id)
