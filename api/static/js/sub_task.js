@@ -219,7 +219,7 @@ function homeClickListener() {
                             </div>\
                         </div>\
                     </div>' +
-                        (i % 3 == 0 ? '</div>' : ''))
+                        ((i+1) % 3 == 0 ? '</div>' : ''))
                 }
                 checkboxClickListener()
                 deleteButtonListener()
