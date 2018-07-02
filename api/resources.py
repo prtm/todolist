@@ -3,7 +3,7 @@ from .models import Task, SubTask
 
 # third party
 from tastypie.resources import ModelResource
-from tastypie.constants import ALL
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.authorization import DjangoAuthorization
 
 
@@ -28,6 +28,6 @@ class SubTaskResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {
             'is_deleted' : ALL,
-            'id' : ALL
+            'parent_task' : ALL_WITH_RELATIONS
         }
         excludes = ('created','modified')
