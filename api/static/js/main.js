@@ -191,7 +191,7 @@ function homeClickListener() {
                             '<div class="col-sm-6 pT4">')
 
                         +
-                        (data[i]['has_sub_tasks'] ? '<a href="#">' :
+                        (data[i]['has_sub_tasks'] ? '<a href="'+"/sub-tasks/"+data[i]['id']+'">' :
                             '') +
                         data[i]['title'] +
                         (data[i]['has_sub_tasks'] ? '</a>' : '') +
@@ -261,7 +261,7 @@ function trashClickListener() {
                             '<div class="col-sm-6 pT4">')
 
                         +
-                        (data[i]['has_sub_tasks'] ? '<a href="#">' :
+                        (data[i]['has_sub_tasks'] ? '<a href="'+"/sub-tasks/"+data[i]['id']+'">' :
                             '') +
                         data[i]['title'] +
                         (data[i]['has_sub_tasks'] ? '</a>' : '') +
