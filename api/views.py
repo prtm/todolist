@@ -24,7 +24,7 @@ def task(request):
 
 def sub_task(request, id):
 
-    sub_task_list = SubTask.manager.not_trashed().filter(pk=id)
+    sub_task_list = SubTask.manager.not_trashed().filter(parent_task=id)
     paginator = Paginator(sub_task_list, 10)  # Show 10 tasks per page
     page = request.GET.get('page')
     try:
