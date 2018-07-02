@@ -1,8 +1,8 @@
 # core django
-from django.urls import path, include
+from django.conf.urls import url, include
 
 # project
-from .views import task
+from .views import task, sub_task
 from .resources import TaskResource, SubTaskResource
 
 # third party
@@ -12,7 +12,8 @@ v1_api.register(TaskResource())
 v1_api.register(SubTaskResource())
 
 urlpatterns = [
-    path('tasks/', task ,name='task'),
-    path('api/', include(v1_api.urls)),
+    url(r'^tasks/$', task, name='task'),
+    url(r'^sub-tasks/(?P<id>[0-9]+)/$', sub_task, name='sub-task'),
+    url(r'^api/', include(v1_api.urls)),
 
 ]
