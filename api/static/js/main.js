@@ -155,8 +155,9 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 function fillTasks(data) {
     content = $('#content').empty()
+    var html = '';
     for (var i = 0; i < data.length; i++) {
-        $(content).append('<li class="list-group-item"> <div class = "row">\
+        html += '<li class="list-group-item"> <div class = "row">\
                     <div class="col-sm-1"> <div class="round">' +
             (data[i]['is_task_completed'] ? '<input type="checkbox" id="checkbox' + i + '" checked class="checkBoxGroup" />' :
                 '<input type="checkbox" id="checkbox' + i + '" class="checkBoxGroup" />') +
@@ -182,10 +183,11 @@ function fillTasks(data) {
             '</div> <div class="col-sm-1 deleteGroup"\
                                                     data-id = "' +
             data[i]['id'] +
-            '" ><i class = "fa fa-trash" aria-hidden = "true" > </i> </div> </div> </li>')
+            '" ><i class = "fa fa-trash" aria-hidden = "true" > </i> </div> </div> </li>';
 
 
     }
+    $(content).append(html)
 }
 
 
@@ -213,8 +215,8 @@ function dateFilter(code) {
         var last = new Date(curr.setDate(last))
         console.log(first, last);
 
-        var value1 = first.getFullYear() + "-" + ("0" +(first.getMonth() + 1)).slice(-2) + "-" + ('0'+first.getDate()).slice(-2);
-        value1 = value1 + "," + last.getFullYear() + "-" + ("0" +(last.getMonth() + 1)).slice(-2) + "-" + ('0'+last.getDate()).slice(-2);
+        var value1 = first.getFullYear() + "-" + ("0" + (first.getMonth() + 1)).slice(-2) + "-" + ('0' + first.getDate()).slice(-2);
+        value1 = value1 + "," + last.getFullYear() + "-" + ("0" + (last.getMonth() + 1)).slice(-2) + "-" + ('0' + last.getDate()).slice(-2);
 
         dict['due_date__range'] = value1
 
@@ -224,8 +226,8 @@ function dateFilter(code) {
         var curr = new Date();
         var first = new Date(curr.setDate(first));
         var last = new Date(curr.setDate(last))
-        var value1 = first.getFullYear() + "-" + ("0" +(first.getMonth() + 1)).slice(-2) + "-" + ('0'+first.getDate()).slice(-2);
-        value1 = value1 + "," + last.getFullYear() + "-" + ("0" +(last.getMonth() + 1)).slice(-2) + "-" + ('0'+last.getDate()).slice(-2);
+        var value1 = first.getFullYear() + "-" + ("0" + (first.getMonth() + 1)).slice(-2) + "-" + ('0' + first.getDate()).slice(-2);
+        value1 = value1 + "," + last.getFullYear() + "-" + ("0" + (last.getMonth() + 1)).slice(-2) + "-" + ('0' + last.getDate()).slice(-2);
 
         dict['due_date__range'] = value1
     } else {
