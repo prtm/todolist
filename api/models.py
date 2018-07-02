@@ -42,7 +42,7 @@ class TaskQuerySet(models.QuerySet):
 
     def over_due(self):
         return self.filter(due_date__gte=date.today())
-    
+
     def not_trashed(self):
         return self.filter(is_deleted=False)
 
@@ -112,8 +112,9 @@ class SubTask(AbstractTask):
         Task, related_name='task', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        print(Task.objects.get(pk=self.parent_task.pk))
-        if self.due_date <= Task.objects.get(pk=self.parent_task.pk).due_date:
+        if not Task.objects.get(pk=self.parent_task.pk).due_date:
+            super(SubTask, self).save(*args, **kwargs)
+        elif self.due_date <= Task.objects.get(pk=self.parent_task.pk).due_date:
             super(SubTask, self).save(*args, **kwargs)
         else:
             raise ValidationError(
