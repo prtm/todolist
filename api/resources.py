@@ -25,7 +25,7 @@ class TaskResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {
             'is_deleted': ALL,
-            'due_date': ['exact', 'range', 'gte',]
+            'due_date': ['exact', 'range', 'gte']
         }
         excludes = ('created', 'modified')
 
@@ -78,7 +78,8 @@ class SubTaskResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {
             'is_deleted': ALL,
-            'parent_task': ALL_WITH_RELATIONS
+            'parent_task': ALL_WITH_RELATIONS,
+            'due_date': ['exact', 'range', 'gte']
         }
         excludes = ('created', 'modified')
 
